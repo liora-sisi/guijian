@@ -68,7 +68,7 @@ test("export filename uses platform, room name, explicit capture time and count"
   const filename = Core.buildExportFilename({
     platform: "Kimi",
     displayName: "示例房间",
-    completedAt: "2026-08-23T19:05:06+08:00",
+    completedAt: new Date(2026, 7, 23, 19, 5, 6),
     messageCount: 721,
   });
   assert.equal(filename, "Kimi__示例房间__采集至20260823-190506__721条.json");
