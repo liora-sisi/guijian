@@ -1,0 +1,13 @@
+{
+  "name": "guijian",
+  "version": "0.5.0",
+  "private": true,
+  "description": "让每一段对话，都有归处。",
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/adapters.test.cjs && node tests/archive-core.test.cjs && node tests/core.test.cjs && node tests/runner-sim.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>合成记忆房间 A</title>
+  <style>
+    body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #f4f4f4; }
+    main { max-width: 760px; margin: 24px auto; }
+    #chat { height: 480px; overflow-y: auto; background: white; border: 1px solid #aaa; padding: 12px; }
+    .chat-content-item { margin: 12px 0; padding: 10px 14px; border-radius: 10px; white-space: pre-wrap; }
+    .chat-content-item.user { margin-left: 25%; background: #dff3e4; }
+    .chat-content-item.assistant { margin-right: 25%; background: #edf0f7; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>合成记忆房间 A</h1>
+    <div id="chat"></div>
+  </main>
+  <script>
+    const chat = document.getElementById("chat");
+    for (let i = 1; i <= 80; i += 1) {
+      const item = document.createElement("article");
+      item.className = `chat-content-item ${i % 2 ? "user" : "assistant"}`;
+      item.dataset.role = i % 2 ? "user" : "assistant";
+      item.textContent = i % 11 === 0 ? "好的" : `合成消息 ${i}`;
+      chat.appendChild(item);
+    }
+    chat.scrollTop = chat.scrollHeight;
+    window.__WMF_TEST_CONFIG__ = { intervalMs: 80, stableNeeded: 3, confirmRounds: 2, quietMs: 50, maxMs: 20000 };
+    const memory = { checkpoint: null, snapshots: [] };
+    window.__WMF_TEST_MEMORY__ = memory;
+    window.chrome = { runtime: {
+      lastError: null,
+      sendMessage(message, callback) {
+        let response = { ok: true };
+        if (message.type === "checkpoint.put") memory.checkpoint = message.value;
+        if (message.type === "checkpoint.get") response.value = memory.checkpoint;
+        if (message.type === "snapshot.commit") { memory.snapshots.push(message.value); memory.checkpoint = null; }
+        if (message.type === "snapshot.latest") response.value = memory.snapshots.at(-1) || null;
+        if (callback) queueMicrotask(() => callback(response));
+        return Promise.resolve(response);
+      }
+    } };
+  </script>
+  <script src="../src/shared-core.js"></script>
+  <script src="../src/adapters.js"></script>
+  <script src="../src/scroll-capture.js"></script>
+  <script src="../src/content.js"></script>
+</body>
+</html>

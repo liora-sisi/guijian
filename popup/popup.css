@@ -1,0 +1,59 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  background: #f3f6fb;
+  color: #1c2433;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; width: 390px; min-height: 520px; background: linear-gradient(165deg, #fbfcff 0%, #eef5f7 55%, #f5f3eb 100%); }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.shell { padding: 18px; }
+.hero { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand img { flex: none; filter: drop-shadow(0 4px 8px rgba(29,73,149,.16)); }
+.eyebrow { color: #5d6f91; font-size: 9px; font-weight: 750; letter-spacing: .17em; }
+h1 { margin: 3px 0 2px; font-family: Georgia, "Songti SC", serif; font-size: 22px; font-weight: 650; letter-spacing: .02em; }
+.hero p { margin: 0; color: #748096; font-size: 11px; }
+.icon-button { width: 34px; height: 34px; border: 1px solid #cad4e3; border-radius: 50%; background: rgba(255,255,255,.78); color: #435675; font-size: 17px; }
+.icon-button:hover { background: #fff; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stats article { padding: 11px 8px 9px; border: 1px solid #d8e0ea; border-radius: 12px; background: rgba(255,255,255,.84); text-align: center; box-shadow: 0 3px 12px rgba(34,68,112,.045); }
+.stats strong { display: block; color: #244b91; font-size: 20px; line-height: 1.1; }
+.stats span { display: block; margin-top: 4px; color: #748096; font-size: 10px; }
+
+.settings { margin-top: 10px; padding: 12px; border: 1px solid #ccd2c8; border-radius: 12px; background: #f9faf7; }
+.settings-title { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
+.settings-title span { color: #6e776e; font-size: 10px; }
+.storage-track { height: 6px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #dfe4dc; }
+.storage-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #315fc4, #1aa8b8 72%, #e2b95c); transition: width .2s ease; }
+.settings p { margin: 7px 0 9px; color: #788077; font-size: 10px; line-height: 1.45; }
+.settings-actions { display: flex; gap: 7px; }
+.settings-actions button { flex: 1; padding: 7px; border: 1px solid #aeb9ac; border-radius: 8px; background: #fff; color: #36503c; font-size: 11px; }
+
+.search { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 0 11px; border: 1px solid #ccd1ca; border-radius: 10px; background: rgba(255,255,255,.9); }
+.search span { color: #788077; font-size: 20px; transform: rotate(-15deg); }
+.search input { width: 100%; padding: 9px 0; border: 0; outline: 0; background: transparent; color: #222822; font-size: 12px; }
+.search input::placeholder { color: #929891; }
+
+.platforms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { padding: 4px 8px; border: 1px solid #d2d7d0; border-radius: 999px; background: rgba(255,255,255,.7); color: #526054; font-size: 10px; }
+.result-meta { min-height: 21px; padding: 9px 2px 4px; color: #7a8179; font-size: 10px; }
+.room-list { max-height: 332px; padding-right: 3px; overflow: auto; scrollbar-width: thin; }
+.room-card { margin-bottom: 8px; padding: 11px; border: 1px solid #d5d9d2; border-radius: 12px; background: rgba(255,255,255,.9); box-shadow: 0 2px 10px rgba(45,55,45,.035); }
+.room-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.room-title { min-width: 0; }
+.room-title strong { display: block; overflow: hidden; color: #252b25; font-size: 12px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.room-title span { color: #778078; font-size: 9px; }
+.badge { flex: none; padding: 3px 6px; border-radius: 999px; background: #e8f1fb; color: #315a96; font-size: 9px; font-weight: 700; }
+.room-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; color: #717a72; font-size: 9px; }
+.warning { color: #9b5a38; }
+.room-actions { display: flex; gap: 6px; margin-top: 9px; }
+.room-actions button { padding: 5px 8px; border: 1px solid #cbd1c9; border-radius: 7px; background: #fafbf9; color: #405047; font-size: 10px; }
+.room-actions button:hover { background: #eef2ec; }
+.room-actions .delete { margin-left: auto; color: #9b4b43; }
+.room-actions .confirm-delete { border-color: #b45a50; background: #fff0ed; color: #903e36; }
+.empty { padding: 38px 26px; color: #7b827a; text-align: center; font-size: 11px; line-height: 1.7; }
+.notice { min-height: 18px; padding-top: 4px; color: #4c6652; font-size: 10px; text-align: center; }

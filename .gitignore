@@ -1,0 +1,21 @@
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+*__采集至*__*条.json
+归笺__全部最新房间__*.json
+chat-memo_*.zip
+.env
+.env.*
+node_modules/
+coverage/
+dist/
+
+# 浏览器和本地私密数据
+Default/
+User Data/
+IndexedDB/
+Local Storage/
+Session Storage/
+exports/
+private/

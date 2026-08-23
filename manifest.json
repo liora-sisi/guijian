@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "归笺",
+  "version": "0.5.0",
+  "description": "让每一段对话，都有归处。自动续记当前 AI 房间，按需回溯旧对话，只在本地保存。",
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "打开归笺",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png"
+    },
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://kimi.com/*",
+        "https://*.kimi.com/*",
+        "https://kimi.moonshot.cn/*",
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://chat.deepseek.com/*",
+        "https://gemini.google.com/*",
+        "https://claude.ai/*",
+        "https://yuanbao.tencent.com/*",
+        "https://www.doubao.com/*",
+        "https://qianwen.com/*",
+        "https://www.qianwen.com/*"
+      ],
+      "js": [
+        "src/shared-core.js",
+        "src/adapters.js",
+        "src/scroll-capture.js",
+        "src/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

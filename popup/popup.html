@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>归笺</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="brand">
+        <img src="../assets/icons/icon-128.png" alt="" width="46" height="46">
+        <div>
+          <div class="eyebrow">LIORA × ELION</div>
+          <h1>归笺</h1>
+          <p>让每一段对话，都有归处。</p>
+        </div>
+      </div>
+      <button id="settingsButton" class="icon-button" type="button" aria-label="打开本地存储与导出设置" title="本地存储与导出">⚙</button>
+    </header>
+
+    <section class="stats" aria-label="归笺概览">
+      <article><strong id="totalRooms">—</strong><span>总房间</span></article>
+      <article><strong id="totalMessages">—</strong><span>已归笺消息</span></article>
+      <article><strong id="todayIngested">—</strong><span>今日新归</span></article>
+    </section>
+
+    <section id="settingsPanel" class="settings" hidden>
+      <div class="settings-title"><strong>存储与导出</strong><span id="storageText">正在估算…</span></div>
+      <div class="storage-track"><div id="storageFill" class="storage-fill"></div></div>
+      <p>所有内容只留在这个浏览器里。删除扩展或清除扩展数据，也会一并移除本地记录。</p>
+      <div class="settings-actions">
+        <button id="exportAllButton" type="button">导出全部最新归笺</button>
+        <button id="refreshButton" type="button">刷新统计</button>
+      </div>
+    </section>
+
+    <label class="search">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" maxlength="200" autocomplete="off" placeholder="搜索对话标题或内容">
+    </label>
+
+    <div id="platforms" class="platforms" aria-label="平台统计"></div>
+    <div id="resultMeta" class="result-meta"></div>
+    <section id="roomList" class="room-list" aria-live="polite"></section>
+    <div id="emptyState" class="empty" hidden>这里还空着。打开一个已支持的对话页，归笺会替你静静续上。</div>
+    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  </main>
+  <script src="../src/shared-core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
