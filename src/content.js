@@ -6,6 +6,7 @@
   const Core = window.WebMemoryFerryCore;
   const ExportCore = window.WebMemoryFerryExport;
   const Adapters = window.WebMemoryFerryAdapters;
+  const extensionVersion = chrome.runtime.getManifest().version;
   const { FerryRun, PassiveRecorder } = window.WebMemoryFerryRunner;
   const profile = Adapters.resolve(location.href);
   if (!profile) return;
@@ -164,7 +165,7 @@
     panel.style.cssText = "position:fixed;right:16px;bottom:16px;width:290px;padding:13px;border:2px solid #333;border-radius:12px;background:#fff;color:#222;box-shadow:0 5px 20px rgba(0,0,0,.25);font:13px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;z-index:2147483647;display:none";
     panel.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
-        <strong style="font-size:15px;font-family:Georgia,Songti SC,serif;color:#244b91">归笺 <span style="font:10px Segoe UI,sans-serif;color:#7b8798">v0.5.0</span></strong>
+        <strong style="font-size:15px;font-family:Georgia,Songti SC,serif;color:#244b91">归笺 <span style="font:10px Segoe UI,sans-serif;color:#7b8798">v${extensionVersion}</span></strong>
         <button data-action="collapse" type="button">— 收起</button>
       </div>
       <div data-field="status"></div>
