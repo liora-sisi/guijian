@@ -26,18 +26,19 @@
       <article><strong id="todayIngested">—</strong><span>今日新归</span></article>
     </section>
 
+    <label class="format-choice">
+      <span>本次导出格式</span>
+      <select id="exportFormatSelect">
+        <option value="json">JSON · 完整数据，适合程序与 Echo</option>
+        <option value="md">Markdown · 排版阅读与整理</option>
+        <option value="txt">纯文本 TXT · 直接打开阅读</option>
+      </select>
+    </label>
+
     <section id="settingsPanel" class="settings" hidden>
       <div class="settings-title"><strong>存储与导出</strong><span id="storageText">正在估算…</span></div>
       <div class="storage-track"><div id="storageFill" class="storage-fill"></div></div>
       <p>所有内容只留在这个浏览器里。删除扩展或清除扩展数据，也会一并移除本地记录。</p>
-      <label class="format-choice">
-        <span>下载格式</span>
-        <select id="exportFormatSelect">
-          <option value="json">JSON · 完整数据，适合程序与 Echo</option>
-          <option value="md">Markdown · 排版阅读与整理</option>
-          <option value="txt">纯文本 TXT · 直接打开阅读</option>
-        </select>
-      </label>
       <div class="settings-actions">
         <button id="exportAllButton" type="button">导出全部最新归笺</button>
         <button id="refreshButton" type="button">刷新统计</button>
