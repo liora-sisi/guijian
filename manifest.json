@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "归笺",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "让每一段对话，都有归处。自动续记当前 AI 房间，按需回溯旧对话，只在本地保存。",
   "icons": {
     "16": "assets/icons/icon-16.png",

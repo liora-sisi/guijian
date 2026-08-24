@@ -18,3 +18,11 @@ test("the chat panel reads its version from the manifest", () => {
   assert.match(contentScript, /chrome\.runtime\.getManifest\(\)\.version/);
   assert.doesNotMatch(contentScript, />v\d+\.\d+\.\d+</);
 });
+
+test("the chat panel offers every export format", () => {
+  assert.match(contentScript, /data-action="export-format"/);
+  assert.match(contentScript, /<option value="json">/);
+  assert.match(contentScript, /<option value="md">/);
+  assert.match(contentScript, /<option value="txt">/);
+  assert.match(contentScript, /buildSnapshotDownload\(snapshot, \{ format, platformLabel/);
+});

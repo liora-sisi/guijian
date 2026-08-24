@@ -146,6 +146,7 @@
     els.stop.disabled = !manualRunning && !recoveryTimer;
     els.pick.disabled = manualBusy;
     els.exportBtn.disabled = manualBusy;
+    els.exportFormat.disabled = manualBusy;
   }
 
   function setCollapsed(collapsed) {
@@ -174,7 +175,15 @@
       <button data-action="start" type="button" style="width:100%;padding:8px;background:linear-gradient(90deg,#315fc4,#1aa8b8);color:#fff;border:0;border-radius:7px;font-weight:700">回溯旧对话</button>
       <button data-action="stop" type="button" style="width:100%;padding:8px;margin-top:6px;background:#9b5362;color:#fff;border:0;border-radius:7px">停在这里并保存</button>
       <button data-action="pick" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#315a96;border:1px solid #8ba7cf;border-radius:7px">认领一条消息</button>
-      <button data-action="export" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#826329;border:1px solid #d2b56f;border-radius:7px">快速导出本房 JSON</button>
+      <label style="display:grid;grid-template-columns:auto 1fr;align-items:center;gap:7px;margin-top:7px;color:#6f623f;font-size:11px">
+        <span>导出格式</span>
+        <select data-action="export-format" style="min-width:0;padding:6px;border:1px solid #d2b56f;border-radius:7px;background:#fff;color:#5e512f;font:11px Segoe UI,sans-serif">
+          <option value="json">JSON · 完整数据</option>
+          <option value="md">Markdown · 排版阅读</option>
+          <option value="txt">TXT · 纯文本阅读</option>
+        </select>
+      </label>
+      <button data-action="export" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#826329;border:1px solid #d2b56f;border-radius:7px">按所选格式导出本房</button>
       <div style="color:#7b8798;font-size:10px;margin-top:8px">打开对话即续记 · 回溯只在你点击后开始 · 只存本地 · 不联网发送</div>`;
     document.documentElement.append(dot, panel);
     els = {
@@ -185,6 +194,7 @@
       start: panel.querySelector('[data-action="start"]'),
       stop: panel.querySelector('[data-action="stop"]'),
       pick: panel.querySelector('[data-action="pick"]'),
+      exportFormat: panel.querySelector('[data-action="export-format"]'),
       exportBtn: panel.querySelector('[data-action="export"]'),
     };
 
@@ -401,7 +411,8 @@
       return;
     }
     const snapshot = response.value;
-    const download = ExportCore.buildSnapshotDownload(snapshot, { format: "json", platformLabel: profile.label });
+    const format = ["json", "md", "txt"].includes(els.exportFormat.value) ? els.exportFormat.value : "json";
+    const download = ExportCore.buildSnapshotDownload(snapshot, { format, platformLabel: profile.label });
     const blob = new Blob([download.body], { type: download.mimeType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -418,7 +429,7 @@
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    els.status.textContent = `已经带回 ${snapshot.messageCount} 条，校验指纹也一并收好`;
+    els.status.textContent = `已经带回 ${snapshot.messageCount} 条 · ${download.formatName}`;
   }
 
   async function handleRouteChange() {
