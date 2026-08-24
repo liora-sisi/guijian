@@ -7,7 +7,7 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; width: 390px; min-height: 520px; background: linear-gradient(165deg, #fbfcff 0%, #eef5f7 55%, #f5f3eb 100%); }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 button { cursor: pointer; }
 .shell { padding: 18px; }
 .hero { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
@@ -30,6 +30,9 @@ h1 { margin: 3px 0 2px; font-family: Georgia, "Songti SC", serif; font-size: 22p
 .storage-track { height: 6px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #dfe4dc; }
 .storage-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #315fc4, #1aa8b8 72%, #e2b95c); transition: width .2s ease; }
 .settings p { margin: 7px 0 9px; color: #788077; font-size: 10px; line-height: 1.45; }
+.format-choice { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px; margin-bottom: 9px; color: #566257; font-size: 10px; }
+.format-choice select { min-width: 0; padding: 6px 7px; border: 1px solid #bdc7bb; border-radius: 7px; outline: none; background: #fff; color: #35443a; font-size: 10px; }
+.format-choice select:focus { border-color: #5976aa; box-shadow: 0 0 0 2px rgba(49,95,196,.1); }
 .settings-actions { display: flex; gap: 7px; }
 .settings-actions button { flex: 1; padding: 7px; border: 1px solid #aeb9ac; border-radius: 8px; background: #fff; color: #36503c; font-size: 11px; }
 

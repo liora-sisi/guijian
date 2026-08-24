@@ -4,6 +4,7 @@
   if (window.top !== window || document.getElementById("web-memory-ferry-dot")) return;
 
   const Core = window.WebMemoryFerryCore;
+  const ExportCore = window.WebMemoryFerryExport;
   const Adapters = window.WebMemoryFerryAdapters;
   const { FerryRun, PassiveRecorder } = window.WebMemoryFerryRunner;
   const profile = Adapters.resolve(location.href);
@@ -172,7 +173,7 @@
       <button data-action="start" type="button" style="width:100%;padding:8px;background:linear-gradient(90deg,#315fc4,#1aa8b8);color:#fff;border:0;border-radius:7px;font-weight:700">回溯旧对话</button>
       <button data-action="stop" type="button" style="width:100%;padding:8px;margin-top:6px;background:#9b5362;color:#fff;border:0;border-radius:7px">停在这里并保存</button>
       <button data-action="pick" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#315a96;border:1px solid #8ba7cf;border-radius:7px">认领一条消息</button>
-      <button data-action="export" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#826329;border:1px solid #d2b56f;border-radius:7px">导出本房归笺</button>
+      <button data-action="export" type="button" style="width:100%;padding:7px;margin-top:6px;background:#fff;color:#826329;border:1px solid #d2b56f;border-radius:7px">快速导出本房 JSON</button>
       <div style="color:#7b8798;font-size:10px;margin-top:8px">打开对话即续记 · 回溯只在你点击后开始 · 只存本地 · 不联网发送</div>`;
     document.documentElement.append(dot, panel);
     els = {
@@ -399,30 +400,8 @@
       return;
     }
     const snapshot = response.value;
-    const payload = {
-      exportSchemaVersion: "web-memory-ferry/export-v1",
-      exportedAt: new Date().toISOString(),
-      manifest: {
-        snapshotId: snapshot.snapshotId,
-        predecessorSnapshotId: snapshot.predecessorSnapshotId,
-        roomKey: snapshot.roomKey,
-        roomCode: String(snapshot.roomKey).split(":").at(-1).slice(0, 8),
-        platform: snapshot.platform,
-        authorityStatus: snapshot.authorityStatus,
-        title: snapshot.title,
-        startedAt: snapshot.startedAt,
-        completedAt: snapshot.completedAt,
-        status: snapshot.status,
-        messageCount: snapshot.messageCount,
-        sequenceHash: snapshot.sequenceHash,
-        evidence: snapshot.evidence,
-        rawIncluded: true,
-        normalizedIncluded: true,
-      },
-      raw: snapshot.raw,
-      normalized: snapshot.normalized,
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+    const download = ExportCore.buildSnapshotDownload(snapshot, { format: "json", platformLabel: profile.label });
+    const blob = new Blob([download.body], { type: download.mimeType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -431,7 +410,7 @@
       displayName: snapshot.title,
       completedAt: snapshot.completedAt,
       messageCount: snapshot.messageCount,
-      extension: "json",
+      extension: download.extension,
     });
     link.style.display = "none";
     document.documentElement.appendChild(link);

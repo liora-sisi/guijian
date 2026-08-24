@@ -2,6 +2,8 @@
   "use strict";
 
   const Core = globalThis.WebMemoryFerryCore;
+  const ExportCore = globalThis.WebMemoryFerryExport;
+  const exportFormatKey = "guijian.exportFormat";
   const labels = { kimi: "Kimi", chatgpt: "ChatGPT", deepseek: "DeepSeek", gemini: "Gemini", claude: "Claude", yuanbao: "腾讯元宝", doubao: "豆包", qianwen: "千问", synthetic: "本地测试" };
   const els = {
     totalRooms: document.getElementById("totalRooms"),
@@ -18,6 +20,7 @@
     storageText: document.getElementById("storageText"),
     storageFill: document.getElementById("storageFill"),
     exportAllButton: document.getElementById("exportAllButton"),
+    exportFormatSelect: document.getElementById("exportFormatSelect"),
     refreshButton: document.getElementById("refreshButton"),
   };
   let queryTimer = null;
@@ -108,8 +111,12 @@
     await refreshStorage();
   }
 
-  function downloadJson(value, filename) {
-    const url = URL.createObjectURL(new Blob([JSON.stringify(value, null, 2)], { type: "application/json;charset=utf-8" }));
+  function selectedExportFormat() {
+    return ["json", "md", "txt"].includes(els.exportFormatSelect.value) ? els.exportFormatSelect.value : "json";
+  }
+
+  function downloadDocument(download, filename) {
+    const url = URL.createObjectURL(new Blob([download.body], { type: download.mimeType }));
     const link = document.createElement("a");
     link.href = url;
     link.download = filename;
@@ -122,29 +129,18 @@
     const response = await send({ type: "archive.snapshot.get", snapshotId });
     if (!response?.ok || !response.value) return void notice("没有找到这份快照", true);
     const snapshot = response.value;
-    downloadJson({ exportSchemaVersion: "web-memory-ferry/export-v1", exportedAt: new Date().toISOString(), manifest: {
-      snapshotId: snapshot.snapshotId,
-      predecessorSnapshotId: snapshot.predecessorSnapshotId,
-      roomKey: snapshot.roomKey,
-      platform: snapshot.platform,
-      authorityStatus: snapshot.authorityStatus,
-      title: snapshot.title,
-      startedAt: snapshot.startedAt,
-      completedAt: snapshot.completedAt,
-      status: snapshot.status,
-      messageCount: snapshot.messageCount,
-      sequenceHash: snapshot.sequenceHash,
-      evidence: snapshot.evidence,
-      rawIncluded: true,
-      normalizedIncluded: true,
-    }, raw: snapshot.raw, normalized: snapshot.normalized }, Core.buildExportFilename({
+    const download = ExportCore.buildSnapshotDownload(snapshot, {
+      format: selectedExportFormat(),
+      platformLabel: labels[snapshot.platform] || snapshot.platform,
+    });
+    downloadDocument(download, Core.buildExportFilename({
       platform: labels[snapshot.platform] || snapshot.platform,
       displayName: snapshot.title,
       completedAt: snapshot.completedAt,
       messageCount: snapshot.messageCount,
-      extension: "json",
+      extension: download.extension,
     }));
-    notice(`已导出“${snapshot.title || "未命名会话"}”`);
+    notice(`已导出“${snapshot.title || "未命名会话"}”的 ${download.formatName}`);
   }
 
   async function exportAll() {
@@ -154,8 +150,13 @@
       const response = await send({ type: "archive.latest.all" });
       if (!response?.ok) return void notice("全部记录读取失败", true);
       const completedAt = new Date().toISOString();
-      downloadJson({ exportSchemaVersion: "web-memory-ferry/latest-rooms-bundle-v1", exportedAt: completedAt, roomCount: response.value.length, snapshots: response.value }, `归笺__全部最新房间__${Core.localCompactTimestamp(completedAt)}.json`);
-      notice(`已带回 ${response.value.length} 个房间的最新归笺`);
+      const download = ExportCore.buildLatestBundleDownload(response.value, {
+        format: selectedExportFormat(),
+        exportedAt: completedAt,
+        platformLabels: labels,
+      });
+      downloadDocument(download, `归笺__全部最新房间__${Core.localCompactTimestamp(completedAt)}.${download.extension}`);
+      notice(`已带回 ${response.value.length} 个房间的最新归笺 · ${download.formatName}`);
     } finally { els.exportAllButton.disabled = false; }
   }
 
@@ -187,6 +188,11 @@
   });
   els.refreshButton.addEventListener("click", () => void loadSummary());
   els.exportAllButton.addEventListener("click", () => void exportAll());
+  els.exportFormatSelect.value = localStorage.getItem(exportFormatKey) || "json";
+  els.exportFormatSelect.addEventListener("change", () => {
+    localStorage.setItem(exportFormatKey, selectedExportFormat());
+    notice(`以后默认导出 ${ExportCore.formatNames[selectedExportFormat()]}`);
+  });
   els.searchInput.addEventListener("input", () => {
     clearTimeout(queryTimer);
     queryTimer = setTimeout(() => void loadSummary(), 250);
